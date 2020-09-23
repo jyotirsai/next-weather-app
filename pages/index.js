@@ -6,23 +6,24 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [weather, setWeather] = useState("");
 
-  let position;
-
   useEffect(() => {
     if (window.navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function (position) {
-        fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-        )
-          .then((response) => response.json())
-          .then((data_1) => setWeather(data_1.main.temp));
-      });
-    } else {
-      fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-      )
-        .then((response) => response.json())
-        .then((data_1) => setWeather(data_1.main.temp));
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+          )
+            .then((response) => response.json())
+            .then((data_1) => setWeather(data_1.main.temp));
+        },
+        function () {
+          fetch(
+            `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+          )
+            .then((response) => response.json())
+            .then((data_1) => setWeather(data_1.main.temp));
+        }
+      );
     }
   }, []);
 
@@ -48,8 +49,7 @@ export default function Home() {
       <h1>Weather App</h1>
       <input value={location} onChange={handleChange} />
       <button onClick={handleClick}>Find Weather</button>
-      <p>Temperature: {weather}</p>
-      <Weather />
+      <Weather weather={weather} />
     </div>
   );
 }

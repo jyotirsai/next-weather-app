@@ -1,20 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
+import Weather from "./weather";
 
 export default function Home() {
   const [location, setLocation] = useState("");
-  const [saveLocation, setSaveLocation] = useState("");
+  const [weather, setWeather] = useState("");
+
+  useEffect(() => {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+    )
+      .then((response) => response.json())
+      .then((data_1) => setWeather(data_1.main.temp));
+  }, []);
 
   function handleChange(event) {
     setLocation(event.target.value);
   }
 
-  async function handleClick() {
+  async function handleClick(event) {
     const res = await fetch(
-      "https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634"
+      `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
     );
     const data = await res.json();
-    setSaveLocation(data.main.temp);
+    setWeather(data.main.temp);
+    setLocation("");
+    event.preventDefault();
   }
 
   return (
@@ -25,7 +36,8 @@ export default function Home() {
       <h1>Weather App</h1>
       <input value={location} onChange={handleChange} />
       <button onClick={handleClick}>Find Weather</button>
-      <p>{saveLocation}</p>
+      <p>Temperature: {weather}</p>
+      <Weather />
     </div>
   );
 }

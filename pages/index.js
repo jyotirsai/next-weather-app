@@ -6,12 +6,24 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [weather, setWeather] = useState("");
 
+  let position;
+
   useEffect(() => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-    )
-      .then((response) => response.json())
-      .then((data_1) => setWeather(data_1.main.temp));
+    if (window.navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function (position) {
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+        )
+          .then((response) => response.json())
+          .then((data_1) => setWeather(data_1.main.temp));
+      });
+    } else {
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+      )
+        .then((response) => response.json())
+        .then((data_1) => setWeather(data_1.main.temp));
+    }
   }, []);
 
   function handleChange(event) {
@@ -25,7 +37,7 @@ export default function Home() {
     const data = await res.json();
     setWeather(data.main.temp);
     setLocation("");
-    event.preventDefault();
+    event.persist();
   }
 
   return (

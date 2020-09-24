@@ -6,6 +6,7 @@ export default function Home() {
   const [location, setLocation] = useState("");
   const [weather, setWeather] = useState([]);
 
+  // grab users lat and long to initialize weather info
   useEffect(() => {
     if (window.navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
@@ -16,6 +17,7 @@ export default function Home() {
     }
   }, []);
 
+  // fetch weather data based on users location or entered location
   function dataFetch(latitude, longitude, city) {
     const base_url = `https://api.openweathermap.org/data/2.5/weather?`;
     const api_key = `bac3f7168a13a53749b5aaf75fed3634`;
@@ -42,10 +44,12 @@ export default function Home() {
     }
   }
 
+  // detect change in input and set it equal to Location state variable
   function handleChange(event) {
     setLocation(event.target.value);
   }
 
+  // call dataFetch when button is pressed and pass location state variable
   function handleClick(event) {
     dataFetch(undefined, undefined, location);
     setLocation("");

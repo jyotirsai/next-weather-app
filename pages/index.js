@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import Card from "@material-ui/core/Card";
 import WeatherBox from "./WeatherBox";
+import { TextField, Typography } from "@material-ui/core";
 
 export default function Home() {
   const [location, setLocation] = useState("");
@@ -52,9 +52,11 @@ export default function Home() {
 
   // call dataFetch when button is pressed and pass location state variable
   function handleClick(event) {
-    dataFetch(undefined, undefined, location);
-    setLocation("");
-    event.persist();
+    if (event.key === "Enter") {
+      dataFetch(undefined, undefined, location);
+      setLocation("");
+      event.persist();
+    }
   }
 
   return (
@@ -62,12 +64,18 @@ export default function Home() {
       <Head>
         <title>Weather App</title>
       </Head>
-      <Card>
-        <h1>Weather App</h1>
-        <input value={location} onChange={handleChange} />
-        <button onClick={handleClick}>Find Weather</button>
-        <WeatherBox weather={weather} />
-      </Card>
+
+      <Typography variant="h1">Weather App</Typography>
+      <TextField
+        variant="filled"
+        value={location}
+        onChange={handleChange}
+        onKeyPress={handleClick}
+        label="Enter City Name"
+        required
+        fullWidth
+      />
+      <WeatherBox weather={weather} />
     </div>
   );
 }

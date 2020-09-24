@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
-import Weather from "./weather";
+import Card from "@material-ui/core/Card";
 
 export default function Home() {
   const [location, setLocation] = useState("");
@@ -47,10 +47,12 @@ export default function Home() {
       <Head>
         <title>Weather App</title>
       </Head>
-      <h1>Weather App</h1>
-      <input value={location} onChange={handleChange} />
-      <button onClick={handleClick}>Find Weather</button>
-      <h1>{weather.main.temp}</h1>
+      <Card>
+        <h1>Weather App</h1>
+        <input value={location} onChange={handleChange} />
+        <button onClick={handleClick}>Find Weather</button>
+        <h1></h1>
+      </Card>
     </div>
   );
 }

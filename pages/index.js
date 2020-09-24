@@ -8,22 +8,22 @@ export default function Home() {
 
   useEffect(() => {
     if (window.navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        function (position) {
-          fetch(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-          )
-            .then((response) => response.json())
-            .then((data_1) => setWeather(data_1.main.temp));
-        },
-        function () {
-          fetch(
-            `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-          )
-            .then((response) => response.json())
-            .then((data_1) => setWeather(data_1.main.temp));
-        }
-      );
+      navigator.geolocation.getCurrentPosition(function (position) {
+        fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+        )
+          .then((response) => response.json())
+          .then((data_1) => setWeather(data_1.main.temp));
+      }, backupFetch());
+    } else {
+      backupFetch();
+    }
+    function backupFetch() {
+      fetch(
+        `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+      )
+        .then((response) => response.json())
+        .then((data_1) => setWeather(data_1.main.temp));
     }
   }, []);
 

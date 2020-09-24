@@ -51,7 +51,7 @@ export default function Home() {
         <h1>Weather App</h1>
         <input value={location} onChange={handleChange} />
         <button onClick={handleClick}>Find Weather</button>
-        <h1></h1>
+        {typeof weather.main != "undefined" ? <h1>{weather.main.temp}</h1> : ""}
       </Card>
     </div>
   );

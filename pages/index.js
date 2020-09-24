@@ -4,7 +4,7 @@ import Weather from "./weather";
 
 export default function Home() {
   const [location, setLocation] = useState("");
-  const [weather, setWeather] = useState("");
+  const [weather, setWeather] = useState([]);
 
   useEffect(() => {
     if (window.navigator.geolocation) {
@@ -13,17 +13,18 @@ export default function Home() {
           `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
         )
           .then((response) => response.json())
-          .then((data_1) => setWeather(data_1.main.temp));
+          .then((data) => setWeather(data));
       }, backupFetch());
     } else {
       backupFetch();
     }
+
     function backupFetch() {
       fetch(
         `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
       )
         .then((response) => response.json())
-        .then((data_1) => setWeather(data_1.main.temp));
+        .then((data) => setWeather(data));
     }
   }, []);
 
@@ -36,7 +37,7 @@ export default function Home() {
       `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
     );
     const data = await res.json();
-    setWeather(data.main.temp);
+    setWeather(data);
     setLocation("");
     event.persist();
   }
@@ -49,7 +50,7 @@ export default function Home() {
       <h1>Weather App</h1>
       <input value={location} onChange={handleChange} />
       <button onClick={handleClick}>Find Weather</button>
-      <Weather weather={weather} />
+      <h1>{weather.main.temp}</h1>
     </div>
   );
 }

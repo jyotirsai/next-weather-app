@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Card from "@material-ui/core/Card";
+import WeatherBox from "./WeatherBox";
 
 export default function Home() {
   const [location, setLocation] = useState("");
@@ -65,7 +66,7 @@ export default function Home() {
         <h1>Weather App</h1>
         <input value={location} onChange={handleChange} />
         <button onClick={handleClick}>Find Weather</button>
-        {typeof weather.main != "undefined" ? <h1>{weather.main.temp}</h1> : ""}
+        <WeatherBox weather={weather} />
       </Card>
     </div>
   );

@@ -9,35 +9,45 @@ export default function Home() {
   useEffect(() => {
     if (window.navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function (position) {
-        fetch(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-        )
-          .then((response) => response.json())
-          .then((data) => setWeather(data));
-      }, backupFetch());
+        dataFetch(position.coords.latitude, position.coords.longitude);
+      }, dataFetch(undefined, undefined, "Edmonton"));
     } else {
-      backupFetch();
+      dataFetch(undefined, undefined, "Edmonton");
     }
+  }, []);
 
-    function backupFetch() {
+  function dataFetch(latitude, longitude, city) {
+    const base_url = `https://api.openweathermap.org/data/2.5/weather?`;
+    const api_key = `bac3f7168a13a53749b5aaf75fed3634`;
+    latitude = typeof latitude !== "undefined" ? latitude : "";
+    longitude = typeof longitude !== "undefined" ? longitude : "";
+    city = typeof city !== "undefined" ? city : "";
+    if (!city) {
       fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=Edmonton&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
+        base_url.concat(
+          "lat=",
+          latitude,
+          "&lon=",
+          longitude,
+          "&units=metric&appid=",
+          api_key
+        )
       )
         .then((response) => response.json())
         .then((data) => setWeather(data));
+    } else {
+      fetch(base_url.concat("q=", city, "&units=metric&appid=", api_key))
+        .then((response) => response.json())
+        .then((data) => setWeather(data));
     }
-  }, []);
+  }
 
   function handleChange(event) {
     setLocation(event.target.value);
   }
 
-  async function handleClick(event) {
-    const res = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=bac3f7168a13a53749b5aaf75fed3634`
-    );
-    const data = await res.json();
-    setWeather(data);
+  function handleClick(event) {
+    dataFetch(undefined, undefined, location);
     setLocation("");
     event.persist();
   }

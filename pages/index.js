@@ -1,9 +1,18 @@
 import { useState, useEffect } from "react";
+import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import WeatherBox from "./WeatherBox";
 import { TextField, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  fieldSize: {
+    width: 600,
+  },
+});
 
 export default function Home() {
+  const classes = useStyles();
   const [location, setLocation] = useState("");
   const [weather, setWeather] = useState([]);
 
@@ -60,7 +69,7 @@ export default function Home() {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <Head>
         <title>Weather App</title>
       </Head>
@@ -73,7 +82,7 @@ export default function Home() {
         onKeyPress={handleClick}
         label="Enter City Name"
         required
-        fullWidth
+        className={classes.fieldSize}
       />
       <WeatherBox weather={weather} />
     </div>

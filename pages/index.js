@@ -30,7 +30,7 @@ export default function Home() {
   // fetch weather data based on users location or entered location
   function dataFetch(latitude, longitude, city) {
     const base_url = `https://api.openweathermap.org/data/2.5/weather?`;
-    const api_key = `bac3f7168a13a53749b5aaf75fed3634`;
+    const api_key = `YOUR API KEY`;
     latitude = typeof latitude !== "undefined" ? latitude : "";
     longitude = typeof longitude !== "undefined" ? longitude : "";
     city = typeof city !== "undefined" ? city : "";

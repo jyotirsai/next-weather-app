@@ -73,7 +73,6 @@ export default function Home() {
       <Head>
         <title>Weather App</title>
       </Head>
-
       <Typography variant="h1">Weather App</Typography>
       <TextField
         variant="filled"
